@@ -1,4 +1,13 @@
-const { sequelize, AdoptionOrder, Adoption } = require("../models");
+const { sequelize, AdoptionOrder, Adoption, User } = require("../models");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: "orgpurrrfectmatch@gmail.com",
+    pass: "zpnc uigd zipi xgqe",
+  },
+});
 
 const createAdoptionOrder = async (req, res) => {
   const t = await sequelize.transaction();
@@ -72,6 +81,74 @@ const createAdoptionOrder = async (req, res) => {
   }
 };
 
+const getAllAdoptionOrders = async (req, res) => {
+  try {
+    const adoptionOrders = await AdoptionOrder.findAll({
+      include: [
+        { model: User, as: "user", attributes: { exclude: ["password"] } },
+        { model: Adoption, as: "adoption" },
+      ],
+    });
+
+    return res.status(200).json({ adoptionOrders });
+  } catch (error) {
+    console.error("Error fetching adoption orders:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+const updateAdoptionOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ message: "Status is required." });
+    }
+
+    const adoptionOrder = await AdoptionOrder.findOne({
+      where: { id: orderId },
+      include: [{ model: User, as: "user" }],
+    });
+
+    if (!adoptionOrder) {
+      return res.status(404).json({ message: "Adoption order not found." });
+    }
+
+    await AdoptionOrder.update({ status }, { where: { id: orderId } });
+
+    const mailOptions = {
+      from: "orgpurrrfectmatch@gmail.com",
+      to: adoptionOrder.user.email,
+      subject: "Adoption Order Status Updated",
+      text: `Hello ${adoptionOrder.user.name},\n\nYour adoption order status has been updated to: ${status}.\n\nThank you for using our service!`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+
+    return res.status(200).json({
+      message:
+        "Adoption order status updated successfully. Email sent to user.",
+      updatedOrder: { id: orderId, status },
+    });
+  } catch (error) {
+    console.error("Error updating adoption order status:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
 module.exports = {
   createAdoptionOrder,
+  getAllAdoptionOrders,
+  updateAdoptionOrderStatus,
 };
