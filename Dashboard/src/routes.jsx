@@ -7,14 +7,17 @@ import {
   ChatBubbleLeftIcon,
   DocumentTextIcon,
   ArrowRightOnRectangleIcon,
-  ShoppingBagIcon, // New import for product icon
-  HeartIcon, // Import a new icon (e.g., HeartIcon for adoption)
+  ShoppingBagIcon,
+  HeartIcon,
+  ShoppingCartIcon,
 } from "@heroicons/react/24/solid";
 import { Home } from "@/pages/dashboard";
 import Users from "@/pages/dashboard/Users";
 import Message from "@/pages/dashboard/Message";
 import Product from "./pages/dashboard/Product";
 import Adoption from "./pages/dashboard/Adoption";
+import ProductOrder from "./pages/dashboard/ProductOrder";
+import AdoptionOrder from "./pages/dashboard/AdoptionOrder";
 import { SignIn } from "@/pages/auth";
 
 const icon = {
@@ -32,8 +35,9 @@ const routeIconMap = {
   "all business service": <RectangleStackIcon {...icon} />,
   "review and replay": <InformationCircleIcon {...icon} />,
   logout: <ArrowRightOnRectangleIcon {...icon} />,
-  product: <ShoppingBagIcon {...icon} />, // Updated icon for "product"
-  adoption: <HeartIcon {...icon} />, // Updated icon for "adoption"
+  product: <ShoppingBagIcon {...icon} />,
+  adoption: <HeartIcon {...icon} />,
+  productOrder: <ShoppingCartIcon {...icon} />,
 };
 
 export const routes = [
@@ -59,7 +63,13 @@ export const routes = [
         element: <Product />,
       },
       {
-        icon: routeIconMap.adoption, // Updated icon here
+        icon: routeIconMap.productOrder,
+        name: "product Order",
+        path: "/product-order",
+        element: <ProductOrder />,
+      },
+      {
+        icon: routeIconMap.adoption,
         name: "adoption",
         path: "/adoption",
         element: <Adoption />,
