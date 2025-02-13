@@ -11,6 +11,7 @@ const {
   getAdoptionsByCategory,
   getAdoptionsByStatus,
   updateAdoptionStatus,
+  getApprovedAdoptions,
 } = require("../controllers/adoptionController");
 
 const router = express.Router();
@@ -44,5 +45,7 @@ router.delete("/Adoptions-delete", verifyToken, deleteAdoption);
 router.get("/adoptions/status/approved", getAdoptionsByStatus);
 
 router.put("/adoption/status", updateAdoptionStatus);
+
+router.get("/status/adoptions/approved", getApprovedAdoptions);
 
 module.exports = router;

@@ -9,7 +9,9 @@ const Adobt = () => {
   useEffect(() => {
     const fetchAdoptionData = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/all-Adoptions");
+        const response = await fetch(
+          "http://localhost:4000/api/status/adoptions/approved"
+        );
         const data = await response.json();
 
         if (Array.isArray(data)) {

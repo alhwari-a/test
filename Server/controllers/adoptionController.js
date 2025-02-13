@@ -68,6 +68,32 @@ const getAllAdoptions = async (req, res) => {
   }
 };
 
+const getApprovedAdoptions = async (req, res) => {
+  try {
+    const adoptions = await Adoption.findAll({
+      where: {
+        status: "approved",
+      },
+      logging: console.log,
+    });
+
+    if (adoptions.length === 0) {
+      return res.status(404).json({ message: "No approved adoptions found." });
+    }
+
+    res.status(200).json({
+      message: "Approved adoptions retrieved successfully.",
+      data: adoptions,
+    });
+  } catch (error) {
+    console.error("Error retrieving approved adoptions:", error);
+    res.status(500).json({
+      message: "Error retrieving approved adoptions",
+      error: error.message,
+    });
+  }
+};
+
 const getAdoptionById = async (req, res) => {
   const { id } = req.params;
 
@@ -289,4 +315,5 @@ module.exports = {
   getAdoptionsByCategory,
   getAdoptionsByStatus,
   updateAdoptionStatus,
+  getApprovedAdoptions,
 };
