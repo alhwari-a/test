@@ -8,11 +8,13 @@ import {
   DocumentTextIcon,
   ArrowRightOnRectangleIcon,
   ShoppingBagIcon, // New import for product icon
+  HeartIcon, // Import a new icon (e.g., HeartIcon for adoption)
 } from "@heroicons/react/24/solid";
 import { Home } from "@/pages/dashboard";
 import Users from "@/pages/dashboard/Users";
 import Message from "@/pages/dashboard/Message";
 import Product from "./pages/dashboard/Product";
+import Adoption from "./pages/dashboard/Adoption";
 import { SignIn } from "@/pages/auth";
 
 const icon = {
@@ -31,6 +33,7 @@ const routeIconMap = {
   "review and replay": <InformationCircleIcon {...icon} />,
   logout: <ArrowRightOnRectangleIcon {...icon} />,
   product: <ShoppingBagIcon {...icon} />, // Updated icon for "product"
+  adoption: <HeartIcon {...icon} />, // Updated icon for "adoption"
 };
 
 export const routes = [
@@ -55,7 +58,12 @@ export const routes = [
         path: "/product",
         element: <Product />,
       },
-
+      {
+        icon: routeIconMap.adoption, // Updated icon here
+        name: "adoption",
+        path: "/adoption",
+        element: <Adoption />,
+      },
       {
         icon: routeIconMap.message,
         name: "message",

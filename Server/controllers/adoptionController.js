@@ -1,5 +1,6 @@
 "use strict";
-const { Adoption } = require("../models");
+const { Adoption, User } = require("../models");
+const nodemailer = require("nodemailer");
 
 const createAdoption = async (req, res) => {
   try {
@@ -199,6 +200,84 @@ const getAdoptionsByStatus = async (req, res) => {
   }
 };
 
+const updateAdoptionStatus = async (req, res) => {
+  try {
+    const { id, status } = req.body;
+
+    console.log(`Adoption ID from request: ${id}`);
+
+    const validStatuses = ["approved", "pending", "rejected"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status value." });
+    }
+
+    const adoption = await Adoption.findOne({
+      where: { id },
+    });
+
+    if (!adoption) {
+      console.log(`No adoption found`);
+      return res.status(404).json({ message: "Adoption not found" });
+    }
+
+    adoption.status = status;
+
+    const userId = adoption.userId;
+
+    const user = await User.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      console.log(`User not found`);
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "orgpurrrfectmatch@gmail.com",
+        pass: "zpnc uigd zipi xgqe",
+      },
+    });
+
+    const emailSubject =
+      status === "approved" ? "Adoption Approved" : "Adoption Rejected";
+    const emailText =
+      status === "approved"
+        ? "Congratulations! Your adoption request has been approved."
+        : "We regret to inform you that your adoption request has been rejected.";
+
+    const mailOptions = {
+      from: "orgpurrrfectmatch@gmail.com",
+      to: user.email,
+      subject: emailSubject,
+      text: emailText,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email:", error);
+        return res.status(500).json({ message: "Error sending email" });
+      }
+      console.log("Email sent: " + info.response);
+    });
+
+    await adoption.save();
+
+    res.status(200).json({
+      message: "Adoption status updated successfully",
+      adoption,
+    });
+  } catch (error) {
+    console.error("Adoption status update error:", error);
+    res.status(500).json({
+      message: "Error updating Adoption status",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createAdoption,
   updateAdoption,
@@ -207,4 +286,5 @@ module.exports = {
   getAdoptionById,
   getAdoptionsByCategory,
   getAdoptionsByStatus,
+  updateAdoptionStatus,
 };
