@@ -8,6 +8,14 @@ const createAdoption = async (req, res) => {
       req.body;
     const userId = req.userId;
 
+    // Validate description length
+    if (!description || description.length > 150) {
+      return res
+        .status(400)
+        .json({ message: "Description must be 150 characters or less." });
+    }
+
+    // Validate main image presence
     if (
       !req.files ||
       !req.files.mainImage ||
