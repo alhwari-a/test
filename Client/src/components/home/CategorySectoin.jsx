@@ -18,6 +18,7 @@ const CategoryCard = ({
   imageSize = "medium",
   imageAlignment = "center",
   cardIndex,
+  link, // Optional link prop
 }) => {
   const imageClass = `${
     imageSize === "large" ? "scale-110 lg:mt-[-16]" : "scale-100"
@@ -34,15 +35,20 @@ const CategoryCard = ({
       }`}
     >
       <div className="flex-1">
-        <div className="text-sm text-gray-500 ">{category}</div>
+        <div className="text-sm text-gray-500">{category}</div>
         <div className={`text-2xl font-bold ${Color}`}>{title}</div>
-        {cta && (
-          <Link to="/shop">
-            <button className="mt-4 py-2 px-4 bg-[#FA5990]  hover:opacity-80 w-36 text-white rounded-3xl">
+        {cta &&
+          (link ? (
+            <Link to={link}>
+              <button className="mt-4 py-2 px-4 bg-[#FA5990] hover:opacity-80 w-36 text-white rounded-3xl">
+                {cta}
+              </button>
+            </Link>
+          ) : (
+            <button className="mt-4 py-2 px-4 bg-[#FA5990] hover:opacity-80 w-36 text-white rounded-3xl">
               {cta}
             </button>
-          </Link>
-        )}
+          ))}
       </div>
       <div
         className={`relative flex-1 ${
@@ -62,16 +68,16 @@ const CategoryCard = ({
   );
 };
 
-const CategorySectoin = () => {
+const CategorySection = () => {
   return (
     <>
-      <div className=" mt-16 px-4 sm:px-8 lg:pt-16 xl:px-40">
+      <div className="mt-16 px-4 sm:px-8 lg:pt-16 xl:px-40">
         <div className="flex flex-col sm:flex-row sm:justify-between items-center">
           <h2 className="text-lg sm:text-xl mr-4 font-semibold text-[#060640]">
             Top Categories
           </h2>
           <Link
-            to="shop"
+            to="/shop"
             className="flex items-center text-gray-600 hover:underline mt-4 sm:mt-0"
           >
             <span className="mr-2 text-[#515161]">See all resources</span>
@@ -107,6 +113,7 @@ const CategorySectoin = () => {
             imageSize="medium"
             imageAlignment="right"
             cardIndex={1}
+            link="/adoption/cats" // ✅ Corrected Link
           />
         </div>
         <CategoryCard
@@ -161,6 +168,7 @@ const CategorySectoin = () => {
             imageSize="large"
             imageAlignment="right"
             cardIndex={6}
+            link="/shop" // ✅ Corrected Link
           />
         </div>
       </div>
@@ -168,4 +176,4 @@ const CategorySectoin = () => {
   );
 };
 
-export default CategorySectoin;
+export default CategorySection;

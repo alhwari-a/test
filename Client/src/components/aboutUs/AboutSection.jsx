@@ -31,7 +31,7 @@ const AboutSection = () => {
             match — Where Love Finds a Home.
           </p>
           <Link
-            to={"/adoption"}
+            to={"/adoption/cats"}
             className="inline-block px-6 py-3 border-2 border-[#31043d] text-white font-medium text-sm uppercase rounded-lg mt-6 bg-[#31043d] hover:bg-transparent hover:text-[#31043d] focus:outline-none transition duration-300 ease-in-out"
           >
             Explore Now

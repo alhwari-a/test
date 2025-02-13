@@ -49,7 +49,10 @@ const createAdoption = async (req, res) => {
 const getAllAdoptions = async (req, res) => {
   try {
     const adoptions = await Adoption.findAll({
-      where: { isPurchased: false },
+      where: {
+        isPurchased: false,
+        status: "approved",
+      },
     });
 
     if (adoptions.length === 0) {

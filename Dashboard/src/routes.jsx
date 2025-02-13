@@ -10,7 +10,9 @@ import {
   ShoppingBagIcon,
   HeartIcon,
   ShoppingCartIcon,
+  DocumentCheckIcon,
 } from "@heroicons/react/24/solid";
+
 import { Home } from "@/pages/dashboard";
 import Users from "@/pages/dashboard/Users";
 import Message from "@/pages/dashboard/Message";
@@ -37,6 +39,7 @@ const routeIconMap = {
   logout: <ArrowRightOnRectangleIcon {...icon} />,
   product: <ShoppingBagIcon {...icon} />,
   adoption: <HeartIcon {...icon} />,
+  adoptionOrder: <DocumentCheckIcon {...icon} />,
   productOrder: <ShoppingCartIcon {...icon} />,
 };
 
@@ -73,6 +76,12 @@ export const routes = [
         name: "adoption",
         path: "/adoption",
         element: <Adoption />,
+      },
+      {
+        icon: routeIconMap.adoptionOrder,
+        name: "adoption order",
+        path: "/adoption-order",
+        element: <AdoptionOrder />,
       },
       {
         icon: routeIconMap.message,
