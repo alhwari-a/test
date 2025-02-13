@@ -8,14 +8,12 @@ const createAdoption = async (req, res) => {
       req.body;
     const userId = req.userId;
 
-    // Validate description length
-    if (!description || description.length > 150) {
+    if (!description || description.length > 10) {
       return res
         .status(400)
-        .json({ message: "Description must be 150 characters or less." });
+        .json({ message: "Description must be 10 characters or less." });
     }
 
-    // Validate main image presence
     if (
       !req.files ||
       !req.files.mainImage ||
@@ -76,6 +74,7 @@ const getAllAdoptions = async (req, res) => {
   }
 };
 
+//update
 const getApprovedAdoptions = async (req, res) => {
   try {
     const adoptions = await Adoption.findAll({
