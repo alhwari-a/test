@@ -114,15 +114,28 @@ const updateAdoptionOrderStatus = async (req, res) => {
 
     const adoptionOrder = await AdoptionOrder.findOne({
       where: { id: orderId },
-      include: [{ model: User, as: "user" }],
+      include: [
+        { model: User, as: "user" },
+        { model: Adoption, as: "adoption" },
+      ],
     });
 
     if (!adoptionOrder) {
       return res.status(404).json({ message: "Adoption order not found." });
     }
 
+    // Update the adoption order status
     await AdoptionOrder.update({ status }, { where: { id: orderId } });
 
+    // If the status is 'rejected', update the associated adoption record
+    if (status === "rejected" && adoptionOrder.adoption) {
+      await Adoption.update(
+        { isPurchased: false, status: "approved" },
+        { where: { id: adoptionOrder.adoption.id } }
+      );
+    }
+
+    // Send email notification
     const mailOptions = {
       from: "orgpurrrfectmatch@gmail.com",
       to: adoptionOrder.user.email,
