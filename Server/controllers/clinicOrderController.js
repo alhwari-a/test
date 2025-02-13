@@ -43,6 +43,26 @@ const createClinicOrder = async (req, res) => {
   }
 };
 
+const getAllClinicOrders = async (req, res) => {
+  try {
+    const clinicOrders = await ClinicOrder.findAll();
+
+    res.status(200).json({
+      success: true,
+      message: "Clinic orders retrieved successfully",
+      data: clinicOrders,
+    });
+  } catch (error) {
+    console.error("Error retrieving clinic orders:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve clinic orders",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createClinicOrder,
+  getAllClinicOrders,
 };

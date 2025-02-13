@@ -11,6 +11,7 @@ import {
   HeartIcon,
   ShoppingCartIcon,
   DocumentCheckIcon,
+  ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/solid";
 
 import { Home } from "@/pages/dashboard";
@@ -20,6 +21,7 @@ import Product from "./pages/dashboard/Product";
 import Adoption from "./pages/dashboard/Adoption";
 import ProductOrder from "./pages/dashboard/ProductOrder";
 import AdoptionOrder from "./pages/dashboard/AdoptionOrder";
+import ClinicOrder from "./pages/dashboard/ClinicOrder";
 import { SignIn } from "@/pages/auth";
 
 const icon = {
@@ -41,6 +43,7 @@ const routeIconMap = {
   adoption: <HeartIcon {...icon} />,
   adoptionOrder: <DocumentCheckIcon {...icon} />,
   productOrder: <ShoppingCartIcon {...icon} />,
+  clinicOrder: <ClipboardDocumentCheckIcon {...icon} />,
 };
 
 export const routes = [
@@ -82,6 +85,12 @@ export const routes = [
         name: "adoption order",
         path: "/adoption-order",
         element: <AdoptionOrder />,
+      },
+      {
+        icon: routeIconMap.clinicOrder,
+        name: "clinic order",
+        path: "/clinic-order",
+        element: <ClinicOrder />,
       },
       {
         icon: routeIconMap.message,
