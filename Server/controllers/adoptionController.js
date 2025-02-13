@@ -72,6 +72,7 @@ const getApprovedAdoptions = async (req, res) => {
   try {
     const adoptions = await Adoption.findAll({
       where: {
+        isPurchased: false,
         status: "approved",
       },
       logging: console.log,
