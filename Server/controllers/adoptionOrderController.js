@@ -85,7 +85,11 @@ const getAllAdoptionOrders = async (req, res) => {
   try {
     const adoptionOrders = await AdoptionOrder.findAll({
       include: [
-        { model: User, as: "user", attributes: { exclude: ["password"] } },
+        {
+          model: User,
+          as: "user",
+          attributes: ["name", "email"],
+        },
         { model: Adoption, as: "adoption" },
       ],
     });
