@@ -13,9 +13,11 @@ const Adobt = () => {
           "http://localhost:4000/api/status/adoptions/approved"
         );
         const data = await response.json();
+        console.log(data);
 
-        if (Array.isArray(data)) {
-          setAdoptionData(data.slice(0, 6));
+        // Adjusted check to access the 'data' property
+        if (Array.isArray(data.data)) {
+          setAdoptionData(data.data.slice(0, 6)); // Access the 'data' array from the response
         } else {
           setAdoptionData([]);
         }
