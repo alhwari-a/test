@@ -51,7 +51,6 @@ const getAllAdoptions = async (req, res) => {
     const adoptions = await Adoption.findAll({
       where: {
         isPurchased: false,
-        status: "approved",
       },
     });
 
