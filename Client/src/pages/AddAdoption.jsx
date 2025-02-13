@@ -37,9 +37,9 @@ const AddAdoption = () => {
 
     if (!description.trim()) {
       newErrors.description = "Description is required";
-    } else if (description.length < 150) {
+    } else if (description.length < 5000) {
       newErrors.description =
-        "Description must be at least 150 characters long";
+        "Description must be at least 5000 characters long";
     }
 
     const phoneRegex = /^\+?[\d\s-]{10,}$/;

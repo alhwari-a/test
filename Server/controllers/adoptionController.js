@@ -8,6 +8,12 @@ const createAdoption = async (req, res) => {
       req.body;
     const userId = req.userId;
 
+    if (!description || description.length > 10) {
+      return res
+        .status(400)
+        .json({ message: "Description must be 10 characters or less." });
+    }
+
     if (
       !req.files ||
       !req.files.mainImage ||
@@ -68,6 +74,7 @@ const getAllAdoptions = async (req, res) => {
   }
 };
 
+//update
 const getApprovedAdoptions = async (req, res) => {
   try {
     const adoptions = await Adoption.findAll({
